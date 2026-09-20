@@ -11,9 +11,8 @@ def construire_commande(cible, *ports, timeout=2, verbose=False, **options):
     if verbose:
         partie.append("--verbose")
     
-    if options:
-        for key, value in options.items():
-            partie.append(f"--{key} {value}")
+    for key, value in options.items():
+        partie.append(f"--{key} {value}")
 
     commande = " ".join(partie)
     return commande
