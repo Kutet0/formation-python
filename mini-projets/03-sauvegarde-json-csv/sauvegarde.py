@@ -2,17 +2,17 @@ import json
 import csv
 
 def sauver_json(cibles, chemin):
-    with open(chemin, "w", encoding="utf_8") as file:
+    with open(chemin, "w", encoding="utf-8") as file:
         json.dump(cibles, file,indent=2,ensure_ascii=False)
     return
 
 def charger_json(chemin):
-    with open(chemin, encoding="utf_8") as file:
+    with open(chemin, encoding="utf-8") as file:
         donnee = json.load(file)
     return donnee
 
 def sauver_csv(cibles, chemin):
-    with open(chemin, "w",newline="", encoding="utf_8") as file:
+    with open(chemin, "w",newline="", encoding="utf-8") as file:
         writer = csv.DictWriter(file, fieldnames=["IP","PORT"])
         writer.writeheader()
         writer.writerows(cibles)
