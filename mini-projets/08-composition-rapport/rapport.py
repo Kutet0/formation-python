@@ -34,7 +34,7 @@ class Rapport:
         return sum(1 for r in self.resultats if r.status == "ouvert")
     
     def resume(self):
-        return f"{len(rapport)} resultat(s), {self.nb_ouverts()} ouvert(s)"
+        return f"{len(self)} resultat(s), {self.nb_ouverts()} ouvert(s)"
     
 rapport = Rapport()
 rapport.ajouter(Resultat(Cible("10.0.0.5", 22), "ouvert"))
