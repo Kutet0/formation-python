@@ -47,4 +47,3 @@ print(ping.run(cible))
 plugins = [PluginPing("ping"), PluginScan("scan"), PluginBanniere("banniere")]
 for p in plugins:
     print(p.run(cible))
-
