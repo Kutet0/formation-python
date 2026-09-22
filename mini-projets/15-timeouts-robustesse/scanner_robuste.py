@@ -10,7 +10,7 @@ def etat_port(ip, port, timeout=1):
             except socket.gaierror:
                 return "hôte injoignable"
             except OSError:
-                "erreur réseau"
+                return "erreur réseau"
             return "ouvert" if code == 0 else "fermé"
 
 def plage_ports(debut, fin):
