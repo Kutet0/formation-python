@@ -10,6 +10,7 @@ def charger_plugins():
                 trouves.append(obj())
     return trouves
 
-c = Cible("10.0.0.5", 22)
-for p in charger_plugins():
-    print(p.nom, "->", p.run(c))
+if __name__ == "__main__":
+    c = Cible("10.0.0.5", 22)
+    for p in charger_plugins():
+        print(p.nom, "->", p.run(c))

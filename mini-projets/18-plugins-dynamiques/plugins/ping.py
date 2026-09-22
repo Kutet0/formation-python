@@ -1,4 +1,5 @@
 from core import Plugin
+
 class PluginPing(Plugin):
     def __init__(self):
         super().__init__("ping")
