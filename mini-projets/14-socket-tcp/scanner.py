@@ -1,13 +1,13 @@
 import socket
 
 def port_ouvert(ip, port, timeout=1):
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.settimeout(timeout)
-    code = s.connect_ex((ip, port))
-    if code == 0:
-        return True
-    else:
-        return False
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.settimeout(timeout)
+        code = s.connect_ex((ip, port))
+        if code == 0:
+            return True
+        else:
+            return False
 
 def plage_ports(debut, fin):
     port = debut
