@@ -10,11 +10,11 @@ class Cible:
     
     @staticmethod
     def port_valide(port):
-         return 0 <= port <= 65535
+        return 0 <= port <= 65535
 
     @property
     def est_bien_connu(self):
-         return self.port < 1024
+        return self.port < 1024
 
     def adresse(self):
         return f"{self.ip}:{self.port}"

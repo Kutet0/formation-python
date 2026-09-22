@@ -26,7 +26,7 @@ class Plugin(ABC):
         return f"Plugin: {self.nom}"
 
 class PluginPing(Plugin):
-     def run(self, cible):
+    def run(self, cible):
         return f"ping {cible.adresse()}"
 
 class PluginScan(Plugin):
