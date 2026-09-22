@@ -24,7 +24,7 @@ def scan_parallele(ip, ports, timeout=1, max_workers=100):
     ouvert = []
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         futurs = {executor.submit(etat_port, ip, p, timeout): p for p in ports}
-        for futur in futurs:
+        for futur in as_completed(futurs):
             port = futurs[futur]
             if futur.result() == "ouvert":
                 ouvert.append(port)
