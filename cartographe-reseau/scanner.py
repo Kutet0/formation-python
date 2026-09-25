@@ -20,11 +20,12 @@ def ping(ip, timeout=1.0, count=1):
     return result.returncode == 0 and b"ttl=" in result.stdout.lower()
 
 def ports_scanner(ip, port, timeout):
+    t = timeout - 0.20
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.settimeout(timeout)
         try:
             code = s.connect_ex((ip, port))
-        except socket.timeout:
+        except socket.t:
             return "filtré"
         except socket.gaierror:
             return "hôte injoignable"
@@ -33,7 +34,7 @@ def ports_scanner(ip, port, timeout):
         return "ouvert" if code == 0 else "fermé"
         
 
-def machine_up(sous_reseau, timeout,max_worker=100):
+def machine_up(sous_reseau, timeout, verbose, max_worker=100):
     reseau = ipaddress.ip_network(sous_reseau)
     machines = []
 
@@ -50,16 +51,20 @@ def machine_up(sous_reseau, timeout,max_worker=100):
             adresse = futurs[futur]
             if futur.result() == True:
                 machines.append(str(adresse))
+                if verbose:
+                    print(f"adresse: {adresse} trouvé")
     return machines
 
-def scan_parallele(ip, ports, timeout, max_worker=100):
+def scan_parallele(ip, ports, timeout, verbose, max_worker=100):
     ouvert = []
     with ThreadPoolExecutor(max_workers=max_worker) as executor:
         futurs = {executor.submit(ports_scanner, ip, p, timeout): p for p in ports}
         for futur in as_completed(futurs):
             port = futurs[futur]
-            if futur.result() == "ouvert":
+            if futur.result() == "ouvert" or futur.result() == "filtré":
                 ouvert.append(port)
+                if verbose:
+                    print(f"port {port} ouvert sur adresse {ip}")
     return sorted(ouvert)
 
 def plage_ports(debut, fin):
@@ -69,12 +74,15 @@ def plage_ports(debut, fin):
         port += 1
 
 commande = args_parse()
-machines = machine_up(commande["sous_reseau"], commande["timeout"])
+t_debut = time.time()
+machines = machine_up(commande["sous_reseau"], commande["timeout"], commande["verbose"])
 
 p_debut, p_fin = commande["ports"].strip().split("-")
 
 sauv = []
 for ip in machines:
-    ouvert = scan_parallele(str(ip), list(plage_ports(int(p_debut), int(p_fin))), commande["timeout"])
+    ouvert = scan_parallele(str(ip), list(plage_ports(int(p_debut), int(p_fin))), commande["timeout"], commande["verbose"])
     sauv.append({"ip": ip, "port": ouvert})
+duree = time.time() - t_debut
+print(f"{len(sauv)} ip trouvé en {duree:.2f}s")
 print(sauv)
